@@ -1,0 +1,16 @@
+{
+    "name": "overclokk/minimum-requirements",
+    "description": "Check the minimum requirements for your WordPress theme or plugin",
+    "keywords": ["wordpress", "plugin", "metabox"],
+    "type": "wordpress-plugin",
+    "require": {
+        "php": ">5.2"
+    },
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "overclokk",
+            "email": "info@overclokk.net"
+        }
+    ]
+}
