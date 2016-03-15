@@ -1,7 +1,7 @@
 {
     "name": "overclokk/minimum-requirements",
     "description": "Check the minimum requirements for your WordPress theme or plugin",
-    "keywords": ["wordpress", "plugin", "metabox"],
+    "keywords": ["wordpress", "plugin"],
     "type": "wordpress-plugin",
     "require": {
         "php": ">5.2"
