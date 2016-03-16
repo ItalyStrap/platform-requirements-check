@@ -1,2 +1,60 @@
 # Minimum requirements for WordPress Themes or Plugins
 Check the minimum requirements for your WordPress theme or plugin
+
+## Installation
+To install simply require the package in the `composer.json` file like
+
+```json
+  "require-dev":
+    {
+      "overclokk/minimum-requirements": "*"
+    }
+```
+
+and then use `composer install` or `composer update` to fetch the package.
+
+### CLI
+Or simply run
+```shell
+composer require overclokk/minimum-requirements
+```
+Or
+```shell
+php composer.phar  require overclokk/minimum-requirements
+```
+
+## Example
+
+```php
+/**
+ * Require minimum-requirements class to load minimum compatibility theme/plugin
+ */
+require( YOUR_PLUGIN_PATH . 'core/wp-requirements.php' );
+
+/**
+ * Instantiate the class
+ *
+ * @param string $php_ver The minimum PHP version.
+ * @param string $wp_ver  The minimum WP version.
+ * @param string $name    The name of the theme/plugin to check.
+ * @param array  $plugins Required plugins format plugin_path/plugin_name.
+ *
+ * @var Minimum_Requirements
+ */
+$requirements = new Minimum_Requirements( '5.3', '3.5', 'YOUR PLUGIN NAME', array( 'plugin-needed/plugin-needed.php' ) );
+
+/**
+ * And check compatibility on install
+ */
+register_activation_hook( __FILE__, array( $requirements, 'check_compatibility_on_install' ) );
+
+/**
+ * Check also if it is already installed and activated
+ */
+if ( ! $requirements->is_compatible_version() ) {
+
+	add_action( 'admin_notices', array( $requirements, 'load_plugin_admin_notices' ) );
+	return;
+
+}
+```
