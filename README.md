@@ -58,3 +58,8 @@ if ( ! $requirements->is_compatible_version() ) {
 
 }
 ```
+
+## Credits
+
+The original code (only the part of cheking requirements) comes from [SZ-Google](https://wordpress.org/plugins/sz-google/) of Massimo della Rovere with my personal improvements and a little piece of code from [WordPress-Plugin-Boilerplate-Powered
+](https://github.com/Mte90/WordPress-Plugin-Boilerplate-Powered) of Mte90 (the part that check the plugin needed).
