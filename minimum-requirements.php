@@ -69,12 +69,23 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 		 * @param array  $plugins Required plugins format plugin_path/plugin_name.php.
 		 */
 		public function __construct( $php_ver, $wp_ver, $name = '', array $plugins = array() ) {
+			if ( ! is_string( $php_ver ) ) {
+				throw new InvalidArgumentException( 'PHP version must be a string' );
+			}
 
-			$this->php_ver = (string) $php_ver;
+			if ( ! is_string( $wp_ver ) ) {
+				throw new InvalidArgumentException( 'WordPress version must be a string' );
+			}
 
-			$this->wp_ver = (string) $wp_ver;
+			if ( ! is_string( $name ) ) {
+				throw new InvalidArgumentException( 'Plugin name must be a string' );
+			}
 
-			$this->name = (string) $name;
+			$this->php_ver = $php_ver;
+
+			$this->wp_ver = $wp_ver;
+
+			$this->name = $name;
 
 			$this->plugins = $plugins;
 
@@ -115,7 +126,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 		 *
 		 * @return bool Return true if plugin is active
 		 */
-		public function is_required_plugin_active() {
+		public function are_required_plugins_active() {
 
 			if ( empty( $this->plugins ) ) {
 				return true;
@@ -123,10 +134,13 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 
 			$result = true;
 
+			$_active_plugins = wp_get_active_and_valid_plugins();
+			$active_plugins  = array_map( array( $this, 'get_plugin_name' ), $_active_plugins );
+
 			foreach ( $this->plugins as $plugin ) {
 
-				if ( ! is_plugin_active( $plugin ) ) {
-					$result = false;
+				if ( ! in_array( $plugin, $active_plugins ) ) {
+					$result            = false;
 					$this->not_found[] = $plugin;
 				}
 			}
@@ -143,7 +157,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 		 */
 		public function is_compatible_version() {
 
-			if ( $this->is_compatible_php() && $this->is_compatible_wordpress() && $this->is_required_plugin_active() ) {
+			if ( $this->is_compatible_php() && $this->is_compatible_wordpress() && $this->are_required_plugins_active() ) {
 				return true;
 			}
 
@@ -154,6 +168,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 		 * Get the admin notice PHP
 		 *
 		 * @param  bolean $wrap Is wrappable or not.
+		 *
 		 * @return string       Return the admin notice for PHP
 		 */
 		public function get_admin_notices_php( $wrap ) {
@@ -165,6 +180,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 		 * Get the admin notice WordPress
 		 *
 		 * @param  bolean $wrap Is wrappable or not.
+		 *
 		 * @return string       Return the admin notice for WordPress
 		 */
 		public function get_admin_notices_wordpress( $wrap ) {
@@ -176,6 +192,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 		 * Get the admin notice for required plugin if is not activated
 		 *
 		 * @param  bolean $wrap Is wrappable or not.
+		 *
 		 * @return string Return the admin notice
 		 */
 		public function get_admin_notices_required_plugins( $wrap ) {
@@ -201,6 +218,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 		 * @param  string $s1   PHP or WordPress.
 		 * @param  string $s2   Current version.
 		 * @param  string $s3   Required version.
+		 *
 		 * @return string       Display errors
 		 */
 		public function get_admin_notices_text( $wrap, $s1, $s2, $s3 ) {
@@ -226,7 +244,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 
 				$message = __( 'Activation of %s in not possible', 'minimum_requirements' );
 
-				$html  = '<div>' . __( 'Activation of ' . $this->name . ' in not possible', 'minimum_requirements' ) . ':</div><ul>';
+				$html = '<div>' . __( 'Activation of ' . $this->name . ' in not possible', 'minimum_requirements' ) . ':</div><ul>';
 
 				if ( ! $this->is_compatible_php() ) {
 					$html .= '<li>' . $this->get_admin_notices_php( false ) . '</li>';
@@ -236,7 +254,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 					$html .= '<li>' . $this->get_admin_notices_wordpress( false ) . '</li>';
 				}
 
-				if ( ! $this->is_required_plugin_active() ) {
+				if ( ! $this->are_required_plugins_active() ) {
 					$html .= '<li>' . $this->get_admin_notices_required_plugins( false ) . '</li>';
 				}
 
@@ -261,9 +279,13 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 				echo $this->get_admin_notices_wordpress( true ); // XSS ok.
 			}
 
-			if ( ! $this->is_required_plugin_active() ) {
+			if ( ! $this->are_required_plugins_active() ) {
 				echo $this->get_admin_notices_required_plugins( true ); // XSS ok.
 			}
+		}
+
+		private function get_plugin_name( $plugin ) {
+			return preg_replace( "~^(?:.*/)*(.*?)(\\.php)~u", "$1", $plugin );
 		}
 	}
 
