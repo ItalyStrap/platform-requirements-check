@@ -15,5 +15,9 @@
             "homepage": "http://www.overclokk.net",
             "role": "Developer"
         }
-    ]
+    ],
+    "require-dev": {
+        "lucatume/wp-browser": "^1.10",
+        "mikey179/vfsStream": "^1.6"
+    }
 }
