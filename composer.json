@@ -16,14 +16,8 @@
             "role": "Developer"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "/Users/Luca/Desktop/function-mocker"
-        }
-    ],
     "require-dev": {
         "lucatume/wp-browser": "^1.10",
-        "lucatume/function-mocker": "dev-master"
+        "lucatume/function-mocker": "^1.0"
     }
 }
