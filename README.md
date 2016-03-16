@@ -5,7 +5,7 @@ Check the minimum requirements for your WordPress theme or plugin
 To install simply require the package in the `composer.json` file like
 
 ```json
-  "require-dev":
+  "require":
     {
       "overclokk/minimum-requirements": "*"
     }
