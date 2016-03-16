@@ -58,6 +58,10 @@ if ( ! $requirements->is_compatible_version() ) {
 	return;
 
 }
+/**
+ * If is compatible load the rest of the theme/plugin code
+ */
+// Your stuff here
 ```
 
 ## Credits
