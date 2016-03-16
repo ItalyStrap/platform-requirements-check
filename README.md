@@ -41,7 +41,7 @@ require( YOUR_PLUGIN_PATH . 'core/wp-requirements.php' );
  *
  * @var Minimum_Requirements
  */
-$requirements = new Minimum_Requirements( '5.3', '3.5', 'YOUR PLUGIN NAME', array( 'plugin-needed/plugin-needed.php' ) );
+$requirements = new Minimum_Requirements( '5.3', '3.5', 'YOUR PLUGIN NAME', array( 'plugin-a', 'plugin-b' ) );
 
 /**
  * Check compatibility on install

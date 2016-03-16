@@ -1,5 +1,6 @@
 <?php
 use tad\FunctionMocker\FunctionMocker as Test;
+
 class Minimum_RequirementsTest extends \Codeception\TestCase\WPTestCase {
 
 	public function setUp() {
@@ -123,7 +124,16 @@ class Minimum_RequirementsTest extends \Codeception\TestCase\WPTestCase {
 	 * @dataProvider required_plugins
 	 */
 	public function it_should_spot_missing_required_plugins( $plugins, $expected ) {
-		Test::replace( 'wp_get_active_and_valid_plugins', [ 'plugin-a/plugin-a.php', 'plugin-b/plugin-b.php' ] );
+		Test::replace( 'wp_get_active_and_valid_plugins', [ WP_PLUGIN_DIR . '/plugin-a/plugin-a.php', WP_PLUGIN_DIR . '/plugin-b/plugin-b.php' ] );
+		Test::replace( 'get_plugin_data',
+			function ( $plugin ) {
+				$map = [
+					WP_PLUGIN_DIR . '/plugin-a/plugin-a.php' => [ 'Name' => 'Plugin A' ],
+					WP_PLUGIN_DIR . '/plugin-b/plugin-b.php' => [ 'Name' => 'Plugin B' ],
+				];
+
+				return isset( $map[ $plugin ] ) ? $map[ $plugin ] : \Patchwork\Interceptor\callOriginal( func_get_args() );
+			} );
 		$sut = new Minimum_Requirements( '5.2', '4.0', 'Some plugin', $plugins );
 
 		$out = $sut->are_required_plugins_active();
