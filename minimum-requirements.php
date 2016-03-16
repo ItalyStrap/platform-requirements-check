@@ -135,7 +135,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 			$result = true;
 
 			$_active_plugins = wp_get_active_and_valid_plugins();
-			$active_plugins  = array_map( array( $this, 'get_plugin_name' ), $_active_plugins );
+			$active_plugins  = array_filter( array_map( array( $this, 'get_plugin_name' ), $_active_plugins ) );
 
 			foreach ( $this->plugins as $plugin ) {
 
@@ -285,7 +285,12 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 		}
 
 		private function get_plugin_name( $plugin ) {
-			return preg_replace( "~^(?:.*/)*(.*?)(\\.php)~u", "$1", $plugin );
+			$plugin_data = get_plugin_data( $plugin );
+			if ( ! ( is_array( $plugin_data ) && isset( $plugin_data['Name'] ) ) ) {
+				return false;
+			}
+
+			return sanitize_title( $plugin_data['Name'] );
 		}
 	}
 
