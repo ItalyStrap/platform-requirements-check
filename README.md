@@ -44,12 +44,13 @@ require( YOUR_PLUGIN_PATH . 'core/wp-requirements.php' );
 $requirements = new Minimum_Requirements( '5.3', '3.5', 'YOUR PLUGIN NAME', array( 'plugin-needed/plugin-needed.php' ) );
 
 /**
- * And check compatibility on install
+ * Check compatibility on install
+ * If is not compatible on install print an admin_notice
  */
 register_activation_hook( __FILE__, array( $requirements, 'check_compatibility_on_install' ) );
 
 /**
- * Check also if it is already installed and activated
+ * If it is already installed and activated check if example new version is compatible, if is not don't load plugin code and prin admin_notice
  */
 if ( ! $requirements->is_compatible_version() ) {
 
