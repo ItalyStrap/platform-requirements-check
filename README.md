@@ -59,7 +59,7 @@ if ( ! $requirements->is_compatible_version() ) {
 
 }
 /**
- * If is compatible load the rest of the theme/plugin code
+ * If it is compatible load the rest of the theme/plugin code
  */
 // Your stuff here
 ```
