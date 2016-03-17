@@ -29,7 +29,7 @@ php composer.phar  require overclokk/minimum-requirements
 /**
  * Require minimum-requirements class to load minimum compatibility theme/plugin
  */
-require( YOUR_PLUGIN_PATH . 'core/wp-requirements.php' );
+require( YOUR_PLUGIN_PATH . 'minimum-requirements.php' );
 
 /**
  * Instantiate the class
