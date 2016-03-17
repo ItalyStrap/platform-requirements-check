@@ -67,6 +67,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 		 * @param string $wp_ver  The minimum WP version.
 		 * @param string $name    The name of the theme/plugin to check.
 		 * @param array  $plugins Required plugins format plugin_path/plugin_name.php.
+		 * @throws InvalidArgumentException Get error if is not a string.
 		 */
 		public function __construct( $php_ver, $wp_ver, $name = '', array $plugins = array() ) {
 			if ( ! is_string( $php_ver ) ) {
@@ -139,7 +140,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 
 			foreach ( $this->plugins as $plugin ) {
 
-				if ( ! in_array( $plugin, $active_plugins ) ) {
+				if ( ! in_array( $plugin, $active_plugins, true ) ) {
 					$result            = false;
 					$this->not_found[] = $plugin;
 				}
@@ -284,6 +285,13 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 			}
 		}
 
+		/**
+		 * Get the plugin name
+		 *
+		 * @param  string $plugin The plguin_path/plugin_name.php.
+		 *
+		 * @return string         The plugin name
+		 */
 		private function get_plugin_name( $plugin ) {
 			$plugin_data = get_plugin_data( $plugin );
 			if ( ! ( is_array( $plugin_data ) && isset( $plugin_data['Name'] ) ) ) {
