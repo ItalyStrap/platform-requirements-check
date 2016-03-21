@@ -10,7 +10,7 @@
  * Plugin Name: Minimum_Requirements for Theme and plugin
  * Plugin URI:  https://example.com/plugin-name
  * Description: ONLY FOR DEVELOPERS - Use it if you want to check the minimum requirements for you theme and plugin, include it in your project.
- * Version:     1.0.0
+ * Version:     1.0.0beta
  * Author:      Enea Overclokk
  * Author URI:  https://www.italystrap.com
  * Text Domain: minimum_requirements

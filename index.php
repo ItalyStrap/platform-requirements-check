@@ -1,4 +1,4 @@
 <?php
 /**
- * May the forze be with you
+ * May the force be with you
  */

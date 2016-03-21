@@ -1,5 +1,5 @@
 # Minimum requirements for WordPress Themes or Plugins
-Check the minimum requirements for your WordPress theme or plugin
+Check the minimum requirements for your WordPress theme or plugin (Beta Version)
 
 ## Installation
 To install simply require the package in the `composer.json` file like
@@ -51,6 +51,7 @@ register_activation_hook( __FILE__, array( $requirements, 'check_compatibility_o
 
 /**
  * If it is already installed and activated check if example new version is compatible, if is not don't load plugin code and prin admin_notice
+ * This part need more test
  */
 if ( ! $requirements->is_compatible_version() ) {
 
