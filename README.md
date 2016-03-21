@@ -1,5 +1,5 @@
-# Minimum requirements for WordPress Themes or Plugins
-Check the minimum requirements for your WordPress theme or plugin (Beta Version)
+# Minimum requirements for WordPress Themes or Plugins (Beta Version)
+Check the minimum requirements for your WordPress theme or plugin
 
 ## Installation
 To install simply require the package in the `composer.json` file like
