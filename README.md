@@ -29,7 +29,7 @@ php composer.phar  require overclokk/minimum-requirements
 /**
  * Require minimum-requirements class to load minimum compatibility theme/plugin
  */
-require( YOUR_PLUGIN_PATH . 'minimum-requirements.php' );
+require( dirname( __FILE__ ) . '/vendor/overclokk/minimum-requirements/minimum-requirements.php' );
 
 /**
  * Instantiate the class
