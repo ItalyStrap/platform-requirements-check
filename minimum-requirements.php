@@ -243,9 +243,9 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 
 			if ( ! $this->is_compatible_version() ) {
 
-				$message = __( 'Activation of %s in not possible', 'minimum_requirements' );
+				$message = __( 'Activation of %s is not possible', 'minimum_requirements' );
 
-				$html = '<div>' . __( 'Activation of ' . $this->name . ' in not possible', 'minimum_requirements' ) . ':</div><ul>';
+				$html = '<div>' . sprintf( $message, $this->name ) . ':</div><ul>';
 
 				if ( ! $this->is_compatible_php() ) {
 					$html .= '<li>' . $this->get_admin_notices_php( false ) . '</li>';
@@ -261,7 +261,7 @@ if ( ! class_exists( 'Minimum_Requirements' ) ) {
 
 				$html .= '</ul>';
 
-				wp_die( $html, __( 'Activation of ' . $this->name . ' in not possible', 'minimum_requirements' ), array( 'back_link' => true ) ); // XSS ok.
+				wp_die( $html, sprintf( $message, $this->name ), array( 'back_link' => true ) ); // XSS ok.
 			};
 		}
 
