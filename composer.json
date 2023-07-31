@@ -1,11 +1,11 @@
 {
-    "name": "overclokk/minimum-requirements",
+    "name": "italystrap/platform-requirements-check",
     "description": "Check the minimum requirements for your WordPress theme or plugin",
-    "keywords": ["wordpress", "plugin", "wordpress plugin"],
-    "homepage": "https://github.com/overclokk/minimum-requirements",
+    "keywords": ["wordpress", "plugin", "wordpress plugin", "theme"],
+    "homepage": "https://github.com/ItalyStrap/platform-requirements-check",
     "type": "wordpress-plugin",
     "require": {
-        "php": ">=5.2"
+        "php": ">=7.4"
     },
     "license": "GPL-2.0+",
     "authors": [
@@ -16,8 +16,30 @@
             "role": "Developer"
         }
     ],
+    "autoload-dev": {
+        "psr-4": {
+            "ItalyStrap\\PlatformRequirementsCheck\\": "src/",
+            "ItalyStrap\\PlatformRequirementsCheck\\Tests\\": "tests/src/",
+            "ItalyStrap\\PlatformRequirementsCheck\\Tests\\Unit\\": "tests/unit/"
+        }
+    },
     "require-dev": {
-        "lucatume/wp-browser": "^1.10",
-        "lucatume/function-mocker": "^1.0"
+        "lucatume/wp-browser": "^3.1",
+        "lucatume/function-mocker": "^1.0",
+        "codeception/module-asserts": "^1.0",
+
+        "squizlabs/php_codesniffer": "^3.7",
+        "phpcompatibility/php-compatibility": "^9.3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0"
+    },
+    "scripts": {
+        "tests": "@php vendor/bin/codecept run unit",
+        "cs": "@php vendor/bin/phpcs -p",
+        "cs:fix": "@php vendor/bin/phpcbf -p"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
