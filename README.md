@@ -45,13 +45,26 @@ The library also provides two traits, `WithNameTrait` and `WithConstraintTrait`,
 
 Additionally, there's a `Requirements` class that can be used to group together and check a set of requirements.
 
+Remember to include the PlatformRequirementsCheck autoloader by requiring the file `__DIR__ . '/vendor/italystrap/platform-requirements-check/autoload.php'` in your project before the Composer autoloader, that's because the PlatformRequirementsCheck is meant to be used for checking the requirements of the Composer autoloader itself, you know the WordPress way...
+
+
 ```php
 <?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/vendor/italystrap/platform-requirements-check/autoload.php';
+
 use ItalyStrap\PlatformRequirementsCheck\Requirements;
 use ItalyStrap\PlatformRequirementsCheck\RangeVersionRequirement;
 
 $requirements = new Requirements(
-    new RangeVersionRequirement('PHP', PHP_VERSION, '7.4', '8.0'),
+    new RangeVersionRequirement(
+    name: 'PHP',
+    current_version: PHP_VERSION,
+    min_version: '7.4',
+    max_version: '8.0'
+    ),
     // add other requirements...
 );
 
@@ -63,7 +76,7 @@ if (!$requirements->check()) {
 }
 ```
 
-`RangeVersionRequirement` is a concrete class that implements `RequirementInterface`. This class checks if the current version of a certain component (e.g., PHP or a PHP extension) is within a version range. Use `RangeVersionRequirement` to define a version range-based requirement.
+`RangeVersionRequirement` is a concrete class that implements `RequirementInterface`. This class checks if the current version of a certain component (e.g., PHP, Theme or plugin) is within a version range. Use `RangeVersionRequirement` to define a version range-based requirement.
 
 ```php
 <?php
@@ -77,6 +90,8 @@ if (!$requirement->check()) {
 ```
 
 ## Advanced Usage
+
+If yo want to use this library in your WordPress plugin, you can use it like this:
 
 ```php
 <?php
