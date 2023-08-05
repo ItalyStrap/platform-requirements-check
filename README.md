@@ -1,73 +1,105 @@
-# Minimum requirements for WordPress Themes or Plugins (Beta Version)
-Check the minimum requirements for your WordPress theme or plugin
+# Platform Requirements Check
+
+[![Build status](https://github.com/ItalyStrap/platform-requirements-check/actions/workflows/test.yml/badge.svg)](https://github.com/ItalyStrap/platform-requirements-check/actions/workflows/test.yml?query=workflow%3Atest)
+[![Latest Stable Version](https://img.shields.io/packagist/v/italystrap/platform-requirements-check.svg)](https://packagist.org/packages/italystrap/platform-requirements-check)
+[![Total Downloads](https://img.shields.io/packagist/dt/italystrap/platform-requirements-check.svg)](https://packagist.org/packages/italystrap/platform-requirements-check)
+[![Latest Unstable Version](https://img.shields.io/packagist/vpre/italystrap/platform-requirements-check.svg)](https://packagist.org/packages/italystrap/platform-requirements-check)
+[![License](https://img.shields.io/packagist/l/italystrap/platform-requirements-check.svg)](https://packagist.org/packages/italystrap/platform-requirements-check)
+![PHP from Packagist](https://img.shields.io/packagist/php-v/italystrap/platform-requirements-check)
+[![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FItalyStrap%2Fcache%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/ItalyStrap/platform-requirements-check/master)
+
+Check the platform requirements for your application
+
+## Table Of Contents
+
+* [Installation](#installation)
+* [Basic Usage](#basic-usage)
+* [Advanced Usage](#advanced-usage)
+* [Contributing](#contributing)
+* [License](#license)
 
 ## Installation
-To install simply require the package in the `composer.json` file like
 
-```json
-  "require":
-    {
-      "overclokk/minimum-requirements": "*"
-    }
+The best way to use this package is through Composer:
+
+```CMD
+composer require italystrap/platform-requirements-check
 ```
+This package adheres to the [SemVer](http://semver.org/) specification and will be fully backward compatible between minor versions.
 
-and then use `composer install` or `composer update` to fetch the package.
-
-### CLI
-Or simply run
-```shell
-composer require overclokk/minimum-requirements
-```
-Or
-```shell
-php composer.phar  require overclokk/minimum-requirements
-```
-
-## Example
+## Basic Usage
 
 ```php
+<?php
+// ... Main plugin file
 /**
- * Require minimum-requirements class to load minimum compatibility theme/plugin
+ * Plugin Name:       YOUR PLUGIN NAME
+ * Plugin URI:        YOUR PLUGIN SITE
+ * Description:       YOUR PLUGIN DESCRIPTION
+ * Version:           1.0.0
+ * Requires at least: 5.3
+ * Requires PHP:      8.0.29
+ * Author:            YOUR NAME
+ * Author URI:        YOUR SITE
+ * License:           GPL-2.0-or-later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+ * Text Domain:       YOUR TEXT DOMAIN
+ * Domain Path:       /languages
  */
-require( dirname( __FILE__ ) . '/vendor/overclokk/minimum-requirements/minimum-requirements.php' );
+ 
+ // ... Do yout stuff
+ ```
+ 
+ ```php
+// ...bootstrap.php
+require __DIR__ . '/vendor/italystrap/platform-requirements-check/autoload.php';
 
-/**
- * Instantiate the class
- *
- * @param string $php_ver The minimum PHP version.
- * @param string $wp_ver  The minimum WP version.
- * @param string $name    The name of the theme/plugin to check.
- * @param array  $plugins Required plugins format plugin_path/plugin_name.
- *
- * @var Minimum_Requirements
- */
-$requirements = new Minimum_Requirements( '5.3', '3.5', 'YOUR PLUGIN NAME', array( 'plugin-a', 'plugin-b' ) );
+$requirementsList = [
+    new \ItalyStrap\PlatformRequirementsCheck\RangeVersionRequirement(
+        'PHP',
+        \PHP_VERSION,
+        (string)$plugin_data['RequiresPHP'],
+        '8.0.29'
+    ),
+    new \ItalyStrap\PlatformRequirementsCheck\RangeVersionRequirement(
+        'WP',
+        $GLOBALS['wp_version'],
+        (string)$plugin_data['RequiresWP'],
+        '6.2'
+    ),
+];
 
-/**
- * Check compatibility on install
- * If is not compatible on install print an admin_notice
- */
-register_activation_hook( __FILE__, array( $requirements, 'check_compatibility_on_install' ) );
+$requirements = (new \ItalyStrap\PlatformRequirementsCheck\Requirements(...$requirementsList));
 
-/**
- * If it is already installed and activated check if example new version is compatible, if is not don't load plugin code and prin admin_notice
- * This part need more test
- */
-if ( ! $requirements->is_compatible_version() ) {
+    $requirementsAreFullFilled = $requirements->check();
 
-	add_action( 'admin_notices', array( $requirements, 'load_plugin_admin_notices' ) );
-	return;
+    if (!$requirementsAreFullFilled) {
+        \add_action(
+            'admin_notices',
+            static function () use ($requirements): void {
+                ?>
+                <div class="notice notice-error">
+                    <?php foreach ($requirements->errorMessages() as $message): ?>
+                        <p><?php \esc_html_e($message); ?></p>
+                    <?php endforeach; ?>
+                </div>
+                <?php
+            }
+        );
+    }
 
-}
-/**
- * If it is compatible load the rest of the theme/plugin code
- */
-// Your stuff here
 ```
 
-## Credits
+## Advanced Usage
 
-The original code (only the part of cheking requirements) comes from [SZ-Google](https://wordpress.org/plugins/sz-google/) of Massimo della Rovere with my personal improvements and a little piece of code from [WordPress-Plugin-Boilerplate-Powered
-](https://github.com/Mte90/WordPress-Plugin-Boilerplate-Powered) of Mte90 (the part that check the plugin needed).
+Coming soon...
 
-Thanks to [Luca Tumedei](http://theaveragedev.com/) for his help for improving the code and writing test with [wp-browser](https://github.com/lucatume/wp-browser)
+## Contributing
+
+All feedback / bug reports / pull requests are welcome.
+
+## License
+
+Copyright (c) 2019 Enea Overclokk, ItalyStrap
+
+This code is licensed under the [MIT](LICENSE).
