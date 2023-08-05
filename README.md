@@ -1,6 +1,6 @@
 # Platform Requirements Check
 
-[![Build status](https://github.com/ItalyStrap/platform-requirements-check/actions/workflows/test.yml/badge.svg)](https://github.com/ItalyStrap/platform-requirements-check/actions/workflows/test.yml?query=workflow%3Atest)
+[![Build status](https://github.com/ItalyStrap/platform-requirements-check/actions/workflows/qa.yml/badge.svg)](https://github.com/ItalyStrap/platform-requirements-check/actions/workflows/qa.yml?query=workflow%3Aqa)
 [![Latest Stable Version](https://img.shields.io/packagist/v/italystrap/platform-requirements-check.svg)](https://packagist.org/packages/italystrap/platform-requirements-check)
 [![Total Downloads](https://img.shields.io/packagist/dt/italystrap/platform-requirements-check.svg)](https://packagist.org/packages/italystrap/platform-requirements-check)
 [![Latest Unstable Version](https://img.shields.io/packagist/vpre/italystrap/platform-requirements-check.svg)](https://packagist.org/packages/italystrap/platform-requirements-check)
@@ -8,7 +8,7 @@
 ![PHP from Packagist](https://img.shields.io/packagist/php-v/italystrap/platform-requirements-check)
 [![Mutation testing badge](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2FItalyStrap%2Fcache%2Fmaster)](https://dashboard.stryker-mutator.io/reports/github.com/ItalyStrap/platform-requirements-check/master)
 
-Check the platform requirements for your application
+**Platform Requirements Check** is a PHP library that allows you to check system requirements for your PHP project or plugin. The library provides a simple interface that can be used to define and check system requirements like minimum and maximum PHP versions, PHP extensions, and any other specific project requirements.
 
 ## Table Of Contents
 
@@ -28,6 +28,55 @@ composer require italystrap/platform-requirements-check
 This package adheres to the [SemVer](http://semver.org/) specification and will be fully backward compatible between minor versions.
 
 ## Basic Usage
+
+The library provides a `RequirementInterface` interface which you can use to define your system requirements. Implement this interface to define a new requirement.
+
+```php
+<?php
+use ItalyStrap\PlatformRequirementsCheck\RequirementInterface;
+
+class MyRequirement implements RequirementInterface
+{
+    // implement the interface methods
+}
+```
+
+The library also provides two traits, `WithNameTrait` and `WithConstraintTrait`, which can be used to simplify the creation of new requirement classes.
+
+Additionally, there's a `Requirements` class that can be used to group together and check a set of requirements.
+
+```php
+<?php
+use ItalyStrap\PlatformRequirementsCheck\Requirements;
+use ItalyStrap\PlatformRequirementsCheck\RangeVersionRequirement;
+
+$requirements = new Requirements(
+    new RangeVersionRequirement('PHP', PHP_VERSION, '7.4', '8.0'),
+    // add other requirements...
+);
+
+if (!$requirements->check()) {
+    // not all requirements are met, handle this case
+    foreach ($requirements->errorMessages() as $errorMessage) {
+        echo $errorMessage;
+    }
+}
+```
+
+`RangeVersionRequirement` is a concrete class that implements `RequirementInterface`. This class checks if the current version of a certain component (e.g., PHP or a PHP extension) is within a version range. Use `RangeVersionRequirement` to define a version range-based requirement.
+
+```php
+<?php
+use ItalyStrap\PlatformRequirementsCheck\RangeVersionRequirement;
+
+$requirement = new RangeVersionRequirement('PHP', PHP_VERSION, '7.4', '8.0');
+
+if (!$requirement->check()) {
+    echo $requirement->errorMessage();
+}
+```
+
+## Advanced Usage
 
 ```php
 <?php
@@ -90,9 +139,7 @@ $requirements = (new \ItalyStrap\PlatformRequirementsCheck\Requirements(...$requ
 
 ```
 
-## Advanced Usage
-
-Coming soon...
+The rest coming soon...
 
 ## Contributing
 
