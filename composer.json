@@ -1,6 +1,6 @@
 {
     "name": "italystrap/platform-requirements-check",
-    "description": "Check the minimum requirements for your application",
+    "description": "Check the minimum and or maximum requirements for your application",
     "keywords": [],
     "type": "library",
     "license": "MIT",
